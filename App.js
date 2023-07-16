@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// import { HeaderBackButton } from "@react-navigation/stack";
 
 const Stack = createNativeStackNavigator();
 
@@ -10,6 +11,8 @@ export default function App() {
   const [time2, setTime2] = useState(20 * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [isRunning2, setIsRunning2] = useState(false);
+  const [colorP1, setColorP1] = useState("red");
+  const [colorP2, setColorP2] = useState("blue");
 
   useEffect(() => {
     let intervalID;
@@ -46,33 +49,114 @@ export default function App() {
       .padStart(2, "0")}`;
   };
 
-  // toggleStartScreen = () =>
+  toggleColorP1 = (color) => {
+    setColorP1(color);
+  };
+  toggleColorP2 = (color) => {
+    setColorP2(color);
+  };
 
-  const mainPage = ({ navigator }) => {
+  const MainPage = ({ navigation }) => {
     return (
       <Pressable style={styles.mainPage} onPress={this.switchPlayers}>
-        <View style={styles.topHalf}>
+        <View style={[styles.topHalf, { backgroundColor: colorP1 }]}>
           <Text style={[styles.text, styles.textP1]}>{formatTime(time)}</Text>
         </View>
-        <View style={styles.bottomHalf}>
+        <View style={[styles.bottomHalf, { backgroundColor: colorP2 }]}>
           <Text style={styles.text}>{formatTime(time2)}</Text>
         </View>
       </Pressable>
     );
   };
-  // const startPage = ({ navigator }) => {
-  //   return (
-  //     <View>
-  //       <button title="Start"></button>
-  //     </View>
-  //   );
-  // };
+  const StartPage = ({ navigation }) => {
+    return (
+      <>
+        <Pressable
+          style={styles.start}
+          onPress={() => {
+            navigation.navigate("Main");
+            start();
+          }}
+        >
+          <Button
+            title={"Settings"}
+            onPress={() => navigation.navigate("Settings")}
+            style={styles.settingsButton}
+          ></Button>
+          <View style={styles.startView}>
+            <Text>Click anywhere to start</Text>
+          </View>
+        </Pressable>
+      </>
+    );
+  };
+
+  const SettingsPage = ({ navigation }) => {
+    return (
+      <>
+        <View style={styles.container}>
+          <Text>Pick Your Colors</Text>
+          <View style={styles.playerContainers}>
+            <Text>Player1</Text>
+            <View style={styles.firstRow}>
+              <Pressable
+                style={[styles.red, styles.boxSize]}
+                onPress={() => toggleColorP1("red")}
+              ></Pressable>
+              <Pressable
+                style={[styles.blue, styles.boxSize]}
+                onPress={() => toggleColorP1("blue")}
+              ></Pressable>
+            </View>
+            <View style={styles.secondRow}>
+              <Pressable
+                style={[styles.green, styles.boxSize]}
+                onPress={() => toggleColorP1("green")}
+              ></Pressable>
+              <Pressable
+                style={[styles.yellow, styles.boxSize]}
+                onPress={() => toggleColorP1("yellow")}
+              ></Pressable>
+            </View>
+          </View>
+          <View style={styles.playerContainers}>
+            <Text>Player2</Text>
+            <View style={styles.firstRow}>
+              <Pressable
+                style={[styles.red, styles.boxSize]}
+                onPress={() => toggleColorP2("red")}
+              ></Pressable>
+              <Pressable
+                style={[styles.blue, styles.boxSize]}
+                onPress={() => toggleColorP2("blue")}
+              ></Pressable>
+            </View>
+            <View style={styles.secondRow}>
+              <Pressable
+                style={[styles.green, styles.boxSize]}
+                onPress={() => toggleColorP2("green")}
+              ></Pressable>
+              <Pressable
+                style={[styles.yellow, styles.boxSize]}
+                onPress={() => toggleColorP2("yellow")}
+              ></Pressable>
+            </View>
+          </View>
+        </View>
+      </>
+    );
+  };
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Main">
-        <Stack.Screen name="Main" component={mainPage}></Stack.Screen>
-        {/* <Stack.Screen name="start" component={startPage}></Stack.Screen> */}
+      <Stack.Navigator initialRouteName="Start">
+        <Stack.Screen
+          name="Start"
+          component={StartPage}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+        <Stack.Screen name="Main" component={MainPage}></Stack.Screen>
+        <Stack.Screen name="Settings" component={SettingsPage}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -101,5 +185,53 @@ const styles = StyleSheet.create({
   },
   textP1: {
     transform: [{ rotate: "180deg" }],
+  },
+
+  // Starting Page
+  start: {
+    flex: 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  startView: {},
+  settingsButton: {
+    // justifyContent: "flex-end",
+    // height: 10,
+    // marginVertical: 10,
+  },
+
+  // Settings page
+  // Color Section
+  container: {
+    flex: 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  playerContainers: {
+    padding: 10,
+  },
+  firstRow: {
+    flexDirection: "row",
+  },
+  secondRow: {
+    flexDirection: "row",
+  },
+  boxSize: {
+    width: 100,
+    height: 100,
+    margin: 10,
+    borderRadius: 50,
+  },
+  red: {
+    backgroundColor: "red",
+  },
+  blue: {
+    backgroundColor: "blue",
+  },
+  green: {
+    backgroundColor: "green",
+  },
+  yellow: {
+    backgroundColor: "yellow",
   },
 });
