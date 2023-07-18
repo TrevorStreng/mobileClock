@@ -78,6 +78,9 @@ export default function App() {
             start();
           }}
         >
+          <View style={styles.titleView}>
+            <Text>Chess Timer</Text>
+          </View>
           <Button
             title={"Settings"}
             onPress={() => navigation.navigate("Settings")}
@@ -189,15 +192,20 @@ const styles = StyleSheet.create({
 
   // Starting Page
   start: {
-    flex: 2,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  startView: {},
+  titleView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  startView: {
+    flex: 2,
+  },
   settingsButton: {
-    // justifyContent: "flex-end",
-    // height: 10,
-    // marginVertical: 10,
+    flex: 2,
   },
 
   // Settings page
