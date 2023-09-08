@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View, Button } from "react-native";
+import Settings from "./settings";
 import { SvgUri } from "react-native-svg";
 
 export default function Main({ navigation }) {
@@ -7,9 +8,15 @@ export default function Main({ navigation }) {
   const [time2, setTime2] = useState(10 * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [isRunning2, setIsRunning2] = useState(false);
-  // const [colorP1, setColorP1] = useState("red");
-  // const [colorP2, setColorP2] = useState("blue");
-  const { colorP1 } = navigation.params;
+  const [colorP1, setColorP1] = useState("red");
+  const [colorP2, setColorP2] = useState("blue");
+
+  const recieveColorP1 = (color) => {
+    setColorP1(color);
+  };
+  const recieveColorP2 = (color) => {
+    setColorP2(color);
+  };
 
   useEffect(() => {
     let intervalID;
@@ -48,8 +55,8 @@ export default function Main({ navigation }) {
 
   return (
     <>
-      <Pressable style={styles.topHalf}>
-        <View style={{ backgroundColor: colorP1 }}>
+      <Pressable style={[styles.topHalf, { backgroundColor: colorP1 }]}>
+        <View>
           <Text style={[styles.text, styles.textP1]}>{formatTime(time)}</Text>
         </View>
       </Pressable>
@@ -62,14 +69,16 @@ export default function Main({ navigation }) {
         </Pressable>
         <Pressable
           title={"Settings"}
-          onPress={() => navigation.navigate("Settings")}
+          onPress={() =>
+            navigation.navigate("Settings", { setColorP1, setColorP2 })
+          }
           style={styles.settings}
         >
           <Text style={styles.settingsText}>Settings</Text>
         </Pressable>
       </View>
-      <Pressable style={styles.bottomHalf}>
-        <View style={{ backgroundColor: colorP2 }}>
+      <Pressable style={[styles.bottomHalf, { backgroundColor: colorP2 }]}>
+        <View>
           <Text style={styles.text}>{formatTime(time2)}</Text>
         </View>
       </Pressable>
