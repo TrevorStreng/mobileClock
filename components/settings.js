@@ -13,15 +13,15 @@ export default function Settings({ route }) {
   const { setColorP1, setColorP2 } = route.params;
   // const { time, time2 } = route.params;
   const { setTime, setTime2 } = route.params;
+  const { setNewTime } = route.params;
   const [color1, setColor1] = useState("");
   const [color2, setColor2] = useState("");
   const [t, setT] = useState(10 * 60);
+  // const [resetTime, setResetTime] = useState(false);
 
   useEffect(() => {
     setColorP1(color1);
     setColorP2(color2);
-    // setTime(t);
-    // setTime2(t);
   }, [color1, color2, t]);
   const toggleColorP1 = (color) => {
     setColor1(color);
@@ -35,18 +35,20 @@ export default function Settings({ route }) {
       let arr = str.split(":");
       let mins = parseInt(arr[0]);
       let secs = parseInt(arr[1]);
-      console.log(secs);
       setT(mins * 60 + secs);
     } else {
       let num = parseInt(str);
-      console.log(num);
-      setT(num * 10);
+      setT(num);
     }
-    setTime(t);
-    setTime2(t);
   };
   const submitTime = () => {
     newTime(inputText);
+  };
+
+  const timeReset = () => {
+    setTime(t);
+    setTime2(t);
+    setNewTime(t);
   };
   return (
     <>
@@ -57,7 +59,9 @@ export default function Settings({ route }) {
           onChangeText={(text) => newTime(text)}
           style={styles.inputBox}
         />
-        <Button title={time}>here</Button>
+        <Button title="time" onPress={() => timeReset()}>
+          Apply
+        </Button>
       </View>
       <View style={styles.container}>
         <Text>Pick Your Colors</Text>

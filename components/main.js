@@ -11,6 +11,7 @@ export default function Main({ navigation }) {
   const [colorP2, setColorP2] = useState("blue");
   const [paused, setPaused] = useState(true);
   const [p1sTurn, setp1sTurn] = useState(true);
+  const [newTime, setNewTime] = useState(10 * 60);
 
   const recieveColorP1 = (color) => {
     setColorP1(color);
@@ -18,9 +19,9 @@ export default function Main({ navigation }) {
   const recieveColorP2 = (color) => {
     setColorP2(color);
   };
-  const recieveTime = (time) => {
-    setTime(time);
-    setTime2(time);
+  const recieveTime = (t) => {
+    setTime(t);
+    setTime2(t);
   };
 
   useEffect(() => {
@@ -82,6 +83,14 @@ export default function Main({ navigation }) {
     setIsRunning2(false);
   };
 
+  const reset = () => {
+    setPaused(true);
+    setIsRunning(false);
+    setIsRunning2(false);
+    setTime(newTime);
+    setTime2(newTime);
+  };
+
   return (
     <>
       <Pressable
@@ -109,6 +118,9 @@ export default function Main({ navigation }) {
         >
           <Icon name="play" size={30} color="black"></Icon>
         </Pressable>
+        <Pressable onPress={() => reset()}>
+          <Icon name="rotate-left" size={30} color="black"></Icon>
+        </Pressable>
         <Pressable
           title={"Settings"}
           onPress={() =>
@@ -117,6 +129,7 @@ export default function Main({ navigation }) {
               setColorP2,
               setTime,
               setTime2,
+              setNewTime,
             })
           }
         >
