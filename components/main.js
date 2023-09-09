@@ -100,6 +100,15 @@ export default function Main({ navigation }) {
         <View>
           <Text style={[styles.text, styles.textP2]}>{formatTime(time2)}</Text>
         </View>
+        <Icon
+          name="star"
+          size={30}
+          style={[
+            styles.activeStar,
+            styles.p2Star,
+            p1sTurn ? { display: "none" } : {},
+          ]}
+        ></Icon>
       </Pressable>
       {/* add a reset button */}
       <View style={styles.middle}>
@@ -140,6 +149,15 @@ export default function Main({ navigation }) {
         style={[styles.bottomHalf, { backgroundColor: colorP1 }]}
         onPress={() => switchPlayers()}
       >
+        <Icon
+          name="star"
+          size={30}
+          style={[
+            styles.activeStar,
+            styles.p1Star,
+            p1sTurn ? {} : { display: "none" },
+          ]}
+        ></Icon>
         <View>
           <Text style={styles.text}>{formatTime(time)}</Text>
         </View>
@@ -169,7 +187,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 50,
   },
-  textP1: {
+  textP2: {
     transform: [{ rotate: "180deg" }],
   },
   middle: {
@@ -198,5 +216,16 @@ const styles = StyleSheet.create({
   },
   pauseButton: {
     paddingHorizontal: 2,
+  },
+  activeStar: {
+    margin: 10,
+  },
+  p1Star: {
+    position: "absolute",
+    top: 0,
+  },
+  p2Star: {
+    position: "absolute",
+    bottom: 0,
   },
 });
