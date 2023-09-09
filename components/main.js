@@ -110,7 +110,6 @@ export default function Main({ navigation }) {
           ]}
         ></Icon>
       </Pressable>
-      {/* add a reset button */}
       <View style={styles.middle}>
         <Pressable
           style={[styles.pauseButton, paused ? { display: "none" } : {}]}

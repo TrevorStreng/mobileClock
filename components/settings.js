@@ -9,15 +9,12 @@ import {
 } from "react-native";
 
 export default function Settings({ route }) {
-  // const { colorP1, colorP2 } = route.params;
   const { setColorP1, setColorP2 } = route.params;
-  // const { time, time2 } = route.params;
   const { setTime, setTime2 } = route.params;
   const { setNewTime } = route.params;
   const [color1, setColor1] = useState("");
   const [color2, setColor2] = useState("");
   const [t, setT] = useState(10 * 60);
-  // const [resetTime, setResetTime] = useState(false);
 
   useEffect(() => {
     setColorP1(color1);
