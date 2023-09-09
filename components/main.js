@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View, Button } from "react-native";
-import Settings from "./settings";
-import { SvgUri } from "react-native-svg";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function Main({ navigation }) {
   const [time, setTime] = useState(10 * 60);
@@ -10,12 +9,18 @@ export default function Main({ navigation }) {
   const [isRunning2, setIsRunning2] = useState(false);
   const [colorP1, setColorP1] = useState("red");
   const [colorP2, setColorP2] = useState("blue");
+  const [paused, setPaused] = useState(true);
+  const [p1sTurn, setp1sTurn] = useState(true);
 
   const recieveColorP1 = (color) => {
     setColorP1(color);
   };
   const recieveColorP2 = (color) => {
     setColorP2(color);
+  };
+  const recieveTime = (time) => {
+    setTime(time);
+    setTime2(time);
   };
 
   useEffect(() => {
@@ -38,11 +43,24 @@ export default function Main({ navigation }) {
     setTime2((t) => t - 1);
   };
 
-  const start = () => setIsRunning(true);
+  const start = () => {
+    if (p1sTurn) setIsRunning(true);
+    else setIsRunning2(true);
+  };
 
   const switchPlayers = () => {
-    setIsRunning(!isRunning);
-    setIsRunning2(!isRunning2);
+    if (isRunning) {
+      setIsRunning(!isRunning);
+      setIsRunning2(!isRunning2);
+      setp1sTurn(false);
+    }
+  };
+  const switchPlayers2 = () => {
+    if (isRunning2) {
+      setIsRunning(!isRunning);
+      setIsRunning2(!isRunning2);
+      setp1sTurn(true);
+    }
   };
 
   const formatTime = (t) => {
@@ -53,33 +71,64 @@ export default function Main({ navigation }) {
       .padStart(2, "0")}`;
   };
 
+  const play = () => {
+    setPaused(false);
+    start();
+  };
+
+  const pause = () => {
+    setPaused(true);
+    setIsRunning(false);
+    setIsRunning2(false);
+  };
+
   return (
     <>
-      <Pressable style={[styles.topHalf, { backgroundColor: colorP1 }]}>
+      <Pressable
+        style={[styles.topHalf, { backgroundColor: colorP2 }]}
+        onPress={() => switchPlayers2()}
+      >
         <View>
-          <Text style={[styles.text, styles.textP1]}>{formatTime(time)}</Text>
+          <Text style={[styles.text, styles.textP2]}>{formatTime(time2)}</Text>
         </View>
       </Pressable>
+      {/* add a reset button */}
       <View style={styles.middle}>
-        <Pressable>
+        <Pressable
+          style={[styles.pauseButton, paused ? { display: "none" } : {}]}
+          onPress={() => pause()}
+        >
           <View style={styles.pause}>
             <View style={styles.pauseBar}></View>
             <View style={styles.pauseBar}></View>
           </View>
         </Pressable>
         <Pressable
+          style={[styles.pauseButton, paused ? {} : { display: "none" }]}
+          onPress={() => play()}
+        >
+          <Icon name="play" size={30} color="black"></Icon>
+        </Pressable>
+        <Pressable
           title={"Settings"}
           onPress={() =>
-            navigation.navigate("Settings", { setColorP1, setColorP2 })
+            navigation.navigate("Settings", {
+              setColorP1,
+              setColorP2,
+              setTime,
+              setTime2,
+            })
           }
-          style={styles.settings}
         >
-          <Text style={styles.settingsText}>Settings</Text>
+          <Icon name="gear" size={30} color="black"></Icon>
         </Pressable>
       </View>
-      <Pressable style={[styles.bottomHalf, { backgroundColor: colorP2 }]}>
+      <Pressable
+        style={[styles.bottomHalf, { backgroundColor: colorP1 }]}
+        onPress={() => switchPlayers()}
+      >
         <View>
-          <Text style={styles.text}>{formatTime(time2)}</Text>
+          <Text style={styles.text}>{formatTime(time)}</Text>
         </View>
       </Pressable>
     </>
@@ -133,5 +182,8 @@ const styles = StyleSheet.create({
     height: 30,
     backgroundColor: "black",
     borderRadius: 5,
+  },
+  pauseButton: {
+    paddingHorizontal: 2,
   },
 });

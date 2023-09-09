@@ -9,16 +9,20 @@ import {
 } from "react-native";
 
 export default function Settings({ route }) {
-  const { colorP1, colorP2 } = route.params;
+  // const { colorP1, colorP2 } = route.params;
   const { setColorP1, setColorP2 } = route.params;
+  // const { time, time2 } = route.params;
+  const { setTime, setTime2 } = route.params;
   const [color1, setColor1] = useState("");
   const [color2, setColor2] = useState("");
-  const [time, setTime] = useState("10:00");
+  const [t, setT] = useState(10 * 60);
 
   useEffect(() => {
     setColorP1(color1);
     setColorP2(color2);
-  }, [color1, color2]);
+    // setTime(t);
+    // setTime2(t);
+  }, [color1, color2, t]);
   const toggleColorP1 = (color) => {
     setColor1(color);
   };
@@ -26,14 +30,34 @@ export default function Settings({ route }) {
   const toggleColorP2 = (color) => {
     setColor2(color);
   };
+  const newTime = (str) => {
+    if (str.includes(":")) {
+      let arr = str.split(":");
+      let mins = parseInt(arr[0]);
+      let secs = parseInt(arr[1]);
+      console.log(secs);
+      setT(mins * 60 + secs);
+    } else {
+      let num = parseInt(str);
+      console.log(num);
+      setT(num * 10);
+    }
+    setTime(t);
+    setTime2(t);
+  };
+  const submitTime = () => {
+    newTime(inputText);
+  };
   return (
     <>
       <View style={styles.time}>
-        <Text>Select time length for each player</Text>
+        <Text style={{ padding: 5 }}>Select time length for each player</Text>
         <TextInput
           placeholder="10:00"
-          onChangeText={(text) => console.log(text)}
+          onChangeText={(text) => newTime(text)}
+          style={styles.inputBox}
         />
+        <Button title={time}>here</Button>
       </View>
       <View style={styles.container}>
         <Text>Pick Your Colors</Text>
@@ -159,5 +183,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  inputBox: {
+    borderWidth: 2,
+    borderColor: "gray",
+    borderRadius: 5,
+    padding: 2,
+    fontSize: 30,
   },
 });
