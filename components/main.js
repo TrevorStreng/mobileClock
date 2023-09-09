@@ -132,15 +132,16 @@ export default function Main({ navigation }) {
         </Pressable>
         <Pressable
           title={"Settings"}
-          onPress={() =>
+          onPress={() => {
             navigation.navigate("Settings", {
               setColorP1,
               setColorP2,
               setTime,
               setTime2,
               setNewTime,
-            })
-          }
+            });
+            pause();
+          }}
         >
           <Icon name="gear" size={30} color="black"></Icon>
         </Pressable>
@@ -216,6 +217,7 @@ const styles = StyleSheet.create({
   },
   pauseButton: {
     paddingHorizontal: 2,
+    width: 30,
   },
   activeStar: {
     margin: 10,
