@@ -56,9 +56,7 @@ export default function Settings({ route }) {
           onChangeText={(text) => newTime(text)}
           style={styles.inputBox}
         />
-        <Button title="time" onPress={() => timeReset()}>
-          Apply
-        </Button>
+        <Button title="apply" onPress={() => timeReset()}></Button>
       </View>
       <View style={styles.container}>
         <Text>Pick Your Colors</Text>
